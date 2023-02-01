@@ -38,6 +38,7 @@ const MealsList = () => {
             name={item.name}
             description={item.description}
             key={item.id}
+            id={item.id}
             price={item.price}
           />
         ))}
