@@ -5,9 +5,13 @@ import CartContext from "../../../context/CartContext/CartContext";
 
 const HeaderCartButton = props => {
   const cartContext = useContext(CartContext);
-
-  const cartItemsNumber = cartContext.items.reduce((currentValue, item) => {},
-  0);
+  console.log(cartContext);
+  const cartItemsNumber = cartContext.items.items.reduce(
+    (currentValue, item) => {
+      return currentValue + item.amount;
+    },
+    0
+  );
 
   return (
     <button className={styles.button} onClick={props.onClick}>
