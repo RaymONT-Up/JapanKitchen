@@ -1,65 +1,23 @@
-.cart-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 3px solid #6b068a;
-  padding: 1rem 0;
-  margin: 1rem 0;
-}
+import styles from "./CartItem.module.css";
 
-.cart-item h2 {
-  margin: 0 0 1rem 1rem;
-  color: #363636;
-}
+const CartItem = props => {
+  const price = `$${props.price.toFixed(2)}`;
 
-.summary {
-  width: 10rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+  return (
+    <li className={styles["cart-item"]}>
+      <div>
+        <h2>{props.name}</h2>
+        <div className={styles.summary}>
+          <span className={styles.price}>{price}</span>
+          <span className={styles.amount}>x {props.amount}</span>
+        </div>
+      </div>
+      <div className={styles.actions}>
+        <button onClick={props.onRemove}>−</button>
+        <button onClick={props.onAdd}>+</button>
+      </div>
+    </li>
+  );
+};
 
-.price {
-  font-weight: bold;
-  margin: 0 1rem;
-  color: #6b068a;
-}
-
-.amount {
-  font-weight: bold;
-  border: 1px solid #ccc;
-  padding: 0.5rem 1rem;
-  border-radius: 7px;
-}
-
-.actions {
-  display: flex;
-  flex-direction: column;
-}
-
-@media (min-width: 768px) {
-  .actions {
-    flex-direction: row;
-  }
-}
-
-.cart-item button {
-  font: inherit;
-  font-weight: bold;
-  font-size: 1.5rem;
-  color: #6b068a;
-  border: 1px solid #6b068a;
-  width: 3rem;
-  text-align: center;
-  border-radius: 7px;
-  background-color: transparent;
-  cursor: pointer;
-  margin-left: 1rem;
-  margin: 0.25rem;
-}
-
-.cart-item button:hover,
-.cart-item button:active {
-  background-color: #47035d;
-  color: white;
-}
+export default CartItem;

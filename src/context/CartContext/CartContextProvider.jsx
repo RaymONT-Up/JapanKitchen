@@ -10,14 +10,58 @@ const defaultCartState = {
 };
 const cartReducer = (state, action) => {
   if (action.type === ADD_ITEM) {
-    // contact добавляет новый элемент в массив и возвращает новый измененный массив
-    // НАМ НУЖНО ПОЛУЧАТЬ НОВОЕ СОСТОЯНИЕ, А НЕ ССЫЛКУ НА СТАРОЕ СОСТОЯНИЕ. ТАКОЙ ПОДХОД БУДЕТ ЛУЧШЕ
-    const updatedItems = state.items.concat(action.item);
     const updatedTotalAmount = +(
       state.totalAmount +
       action.item.price * action.item.amount
     ).toFixed(2);
 
+    const existingCartItemIndex = state.items.findIndex(
+      item => item.id === action.item.id
+    );
+    const existingCartItem = state.items[existingCartItemIndex];
+
+    let updatedItem;
+    let updatedItems;
+
+    if (existingCartItem) {
+      updatedItem = {
+        ...existingCartItem,
+        amount: existingCartItem.amount + action.item.amount,
+      };
+
+      updatedItems = [...state.items];
+      updatedItems[existingCartItemIndex] = updatedItem;
+    } else {
+      updatedItem = {
+        ...action.item,
+      };
+      updatedItems = state.items.concat(action.item);
+    }
+
+    return {
+      items: updatedItems,
+      totalAmount: updatedTotalAmount,
+    };
+  }
+  if (action.type === REMOVE_ITEM) {
+    const existingCartItemIndex = state.items.findIndex(
+      item => item.id === action.id
+    );
+    const existingCartItem = state.items[existingCartItemIndex];
+
+    const updatedTotalAmount = state.totalAmount - existingCartItem.price;
+
+    let updatedItems;
+    if (existingCartItem.amount === 1) {
+      updatedItems = state.items.filter(item => item.id !== action.id);
+    } else {
+      const updatedItem = {
+        ...existingCartItem,
+        amount: existingCartItem.amount - 1,
+      };
+      updatedItems = [...state.items];
+      updatedItems[existingCartItemIndex] = updatedItem;
+    }
     return {
       items: updatedItems,
       totalAmount: updatedTotalAmount,
@@ -45,7 +89,7 @@ const CartContextProvider = props => {
   };
 
   const cartContext = {
-    items: cartState,
+    items: cartState.items,
     totalAmount: cartState.totalAmount,
     addItem: addItemHandler,
     removeItem: removeItemHandler,
