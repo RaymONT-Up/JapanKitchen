@@ -1,0 +1,55 @@
+.form {
+  padding: 40px 10px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+.label input {
+  margin-top: 5px;
+}
+.label.invalid {
+  color: red;
+}
+.label.invalid input {
+  border-color: red;
+}
+.back-arrow {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  font-size: 26px;
+  background-color: transparent;
+  border: 0;
+
+  cursor: pointer;
+}
+.error-text {
+  margin: 0;
+  color: red;
+}
+.button {
+  font: inherit;
+  cursor: pointer;
+  background-color: transparent;
+  border: 1px solid #6b068a;
+  padding: 0.5rem 2rem;
+  border-radius: 25px;
+
+  font-size: bold;
+}
+.button:hover,
+.button:active {
+  background-color: #47035d;
+  border-color: #47035d;
+  color: white;
+}
+.button:disabled {
+  opacity: 0.7;
+}
