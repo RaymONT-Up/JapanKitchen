@@ -3,7 +3,16 @@
   animation: meals-appear 1s ease-out forwards;
   list-style: none;
 }
-
+.loading {
+  text-align: center;
+  font-size: 2rem;
+  color: greenyellow;
+}
+.error {
+  text-align: center;
+  font-size: 2rem;
+  color: red;
+}
 @keyframes meals-appear {
   from {
     opacity: 0;

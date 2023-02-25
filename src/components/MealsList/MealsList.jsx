@@ -1,39 +1,53 @@
+import { useEffect, useState } from "react";
 import Card from "../UI/Card/Card";
 import MealItem from "./MealItem/MealItem";
 import styles from "./MealsList.module.css";
-const DUMMY_MEALS = [
-  {
-    id: "m1",
-    name: 'Ролл "Наоми"',
-    description:
-      "Сыр Филадельфия, куриное филе, масаго, помидор, огурец, кунжут",
-    price: 11.99,
-  },
-  {
-    id: "m2",
-    name: "Спайс в лососе",
-    description: "Рис, лосось, соус спайс",
-    price: 3.99,
-  },
-  {
-    id: "m3",
-    name: "Суши с угрем",
-    description: "Угорь копченый, соус унаги, кунжут",
-    price: 4.99,
-  },
-  {
-    id: "m4",
-    name: 'Салат "Поке с лососем"',
-    description:
-      "Рис, лосось, огурец, чука, нори, стружка тунца, соус ореховый",
-    price: 7.99,
-  },
-];
+
 const MealsList = () => {
+  const [meals, setMeals] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [httpErrorMessage, setHttpErrorMessage] = useState();
+
+  useEffect(() => {
+    const fetchMeals = async () => {
+      setIsLoading(true);
+      const response = await fetch(
+        "https://default-todo-e3713-default-rtdb.firebaseio.com/meals.json"
+      );
+
+      if (!response.ok) {
+        throw new Error("Что-то пошло не так");
+      }
+
+      const responseData = await response.json();
+      const loadedMeals = [];
+      for (const key in responseData) {
+        loadedMeals.push({
+          id: key,
+          name: responseData[key].name,
+          description: responseData[key].description,
+          price: responseData[key].price,
+        });
+      }
+      setMeals(loadedMeals);
+      setIsLoading(false);
+    };
+
+    fetchMeals().catch(err => {
+      setIsLoading(false);
+      setHttpErrorMessage(err.message);
+    });
+  }, []);
+  if (isLoading) {
+    return <div className={styles.loading}>Загрузка</div>;
+  }
+  if (httpErrorMessage) {
+    return <div className={styles.error}>Ошибка - {httpErrorMessage}</div>;
+  }
   return (
     <Card className={styles.list}>
       <ul>
-        {DUMMY_MEALS.map(item => (
+        {meals.map(item => (
           <MealItem
             name={item.name}
             description={item.description}
